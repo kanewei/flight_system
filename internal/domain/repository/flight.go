@@ -18,6 +18,11 @@ type FlightSeatRepository interface {
 	CreateFlightSeats(flightId string, flightSeats []*entity.FlightSeat) error
 }
 
+type FlightCacheRepository interface {
+	GetSearchFlight(ctx context.Context, flight *entity.Flight, page int) ([]*entity.Flight, error)
+	SetSearchFlight(ctx context.Context, flight *entity.Flight, flights []*entity.Flight) error
+}
+
 type FlightTicketCacheRepository interface {
 	CreateFlightTickets(ctx context.Context, flightSeats map[string]interface{}, expireTime time.Duration) error
 }

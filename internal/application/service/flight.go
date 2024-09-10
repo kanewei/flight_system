@@ -39,9 +39,9 @@ func (f *FlightService) GetFlightById(req *model.GetFlightRequest) (*model.GetFl
 	return f.flightRespone.GetFlightByIdToResponse(flight), nil
 }
 
-func (f *FlightService) SearchFlight(req *model.SearchFlightRequest) ([]*model.GetFlightResponse, error) {
+func (f *FlightService) SearchFlight(ctx context.Context, req *model.SearchFlightRequest) ([]*model.GetFlightResponse, error) {
 	flight := f.flightRequest.SearchFlightRequestToEntity(req)
-	flights, err := f.flightAggAggrate.SearchFlight(flight, req.Page)
+	flights, err := f.flightAggAggrate.SearchFlight(ctx, flight, req.Page)
 	if err != nil {
 		return nil, err
 	}

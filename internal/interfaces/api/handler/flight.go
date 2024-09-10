@@ -61,7 +61,7 @@ func (f *flightHandler) Search(ctx *gin.Context) {
 		return
 	}
 
-	flights, err := f.flightService.SearchFlight(req)
+	flights, err := f.flightService.SearchFlight(ctx, req)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}

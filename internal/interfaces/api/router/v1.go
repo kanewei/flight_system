@@ -1,5 +1,7 @@
 package router
 
+import "flight_system/internal/interfaces/api/middleware"
+
 func (r *router) RegisterV1(group Versions) {
 	for _, version := range group.versions {
 		// function layer
@@ -12,39 +14,39 @@ func (r *router) RegisterV1(group Versions) {
 
 		// user layer
 		{
-			user.POST("/sign_up", r.userHandler.SignUp)
-			user.POST("/login", r.userHandler.Login)
+			user.POST("/sign_up", middleware.UserAuthMiddlerware(), r.userHandler.SignUp)
+			user.POST("/login", middleware.UserAuthMiddlerware(), r.userHandler.Login)
 		}
 
 		// airplane layer
 		{
-			airplane.POST("/create", r.airplaneHandler.Create)
-			airplane.GET("/get", r.airplaneHandler.Get)
+			airplane.POST("/create", middleware.StaffAuthMiddlerware(), r.airplaneHandler.Create)
+			airplane.GET("/get", middleware.StaffAuthMiddlerware(), r.airplaneHandler.Get)
 		}
 
 		// airport layer
 		{
-			airport.POST("/create", r.airportHandler.Create)
-			airport.GET("/get", r.airportHandler.Get)
+			airport.POST("/create", middleware.StaffAuthMiddlerware(), r.airportHandler.Create)
+			airport.GET("/get", middleware.StaffAuthMiddlerware(), r.airportHandler.Get)
 		}
 
 		// flight layer
 		{
-			flight.POST("/create", r.flightHandler.Create)
-			flight.GET("/get", r.flightHandler.GetById)
+			flight.POST("/create", middleware.StaffAuthMiddlerware(), r.flightHandler.Create)
+			flight.GET("/get", middleware.StaffAuthMiddlerware(), r.flightHandler.GetById)
 			flight.GET("/search", r.flightHandler.Search)
 		}
 
 		// ticket layer
 		{
-			ticket.POST("/create_order", r.ticketHandler.CreateTicketOrder)
-			ticket.GET("/get", r.ticketHandler.GetById)
-			ticket.GET("/get_by_user/:id", r.ticketHandler.GetByUserId)
+			ticket.POST("/create_order", middleware.UserAuthMiddlerware(), r.ticketHandler.CreateTicketOrder)
+			ticket.GET("/get", middleware.UserAuthMiddlerware(), r.ticketHandler.GetById)
+			ticket.GET("/get_by_user/:id", middleware.UserAuthMiddlerware(), r.ticketHandler.GetByUserId)
 		}
 
 		// order layer
 		{
-			order.POST("/create", r.orderHandler.CreateOrder)
+			order.POST("/create", middleware.UserAuthMiddlerware(), r.orderHandler.CreateOrder)
 		}
 	}
 }

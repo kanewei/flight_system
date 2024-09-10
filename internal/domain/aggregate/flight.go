@@ -30,9 +30,6 @@ func NewFlightAggrate() *flightAggrate {
 }
 
 func (f *flightAggrate) CreateFlight(ctx context.Context, flight *entity.Flight) (string, error) {
-	// Todo check if airplane is available
-	// Todo check if airport is available
-
 	createdFlight, err := f.flightRepo.CreateFlight(flight)
 	if err != nil {
 		return "", err

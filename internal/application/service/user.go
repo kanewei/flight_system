@@ -39,5 +39,5 @@ func (u *UserService) Login(req *model.LoginRequest) (*model.LoginResponse, erro
 	// Todo generate token
 	token := ""
 
-	return u.userResponse.LoginToResponse(user.ID, user.Name, token), nil
+	return u.userResponse.LoginToResponse(user, token), nil
 }

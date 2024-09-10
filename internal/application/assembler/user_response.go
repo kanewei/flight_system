@@ -1,6 +1,9 @@
 package assembler
 
-import "flight_system/internal/application/model"
+import (
+	"flight_system/internal/application/model"
+	"flight_system/internal/domain/entity"
+)
 
 type UserResponse struct{}
 
@@ -14,10 +17,10 @@ func (a *UserResponse) SignUpToResponse(id int64) *model.SignUpResponse {
 	}
 }
 
-func (a *UserResponse) LoginToResponse(id int64, name, token string) *model.LoginResponse {
+func (a *UserResponse) LoginToResponse(user *entity.User, token string) *model.LoginResponse {
 	return &model.LoginResponse{
-		Id:    id,
+		Id:    user.ID,
 		Token: token,
-		Name:  name,
+		Name:  user.Name,
 	}
 }

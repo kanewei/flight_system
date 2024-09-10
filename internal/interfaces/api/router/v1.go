@@ -5,12 +5,19 @@ import "flight_system/internal/interfaces/api/middleware"
 func (r *router) RegisterV1(group Versions) {
 	for _, version := range group.versions {
 		// function layer
+		staff := version.Group("/staff")
 		user := version.Group("/user")
 		airplane := version.Group("/airplane")
 		airport := version.Group("/airport")
 		flight := version.Group("/flight")
 		ticket := version.Group("/ticket")
 		order := version.Group("/order")
+
+		// staff layer
+		{
+			staff.POST("/create_staff", middleware.StaffAuthMiddlerware(), r.staffHandler.CreateStaff)
+			staff.POST("/login", middleware.StaffAuthMiddlerware(), r.staffHandler.Login)
+		}
 
 		// user layer
 		{
@@ -34,14 +41,14 @@ func (r *router) RegisterV1(group Versions) {
 		{
 			flight.POST("/create", middleware.StaffAuthMiddlerware(), r.flightHandler.Create)
 			flight.GET("/get", middleware.StaffAuthMiddlerware(), r.flightHandler.GetById)
-			flight.GET("/search", r.flightHandler.Search)
+			flight.GET("/search", middleware.UserAuthMiddlerware(), r.flightHandler.Search)
 		}
 
 		// ticket layer
 		{
 			ticket.POST("/create_order", middleware.UserAuthMiddlerware(), r.ticketHandler.CreateTicketOrder)
 			ticket.GET("/get", middleware.UserAuthMiddlerware(), r.ticketHandler.GetById)
-			ticket.GET("/get_by_user/:id", middleware.UserAuthMiddlerware(), r.ticketHandler.GetByUserId)
+			ticket.GET("/get_by_user", middleware.UserAuthMiddlerware(), r.ticketHandler.GetByUserId)
 		}
 
 		// order layer

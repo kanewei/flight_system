@@ -10,6 +10,7 @@ import (
 
 type router struct {
 	healthHandler   handler.HealthHandler
+	staffHandler    handler.StaffHandler
 	userHandler     handler.UserHandler
 	airplaneHandler handler.AirplaneHandler
 	airportHandler  handler.AirportHandler
@@ -21,6 +22,7 @@ type router struct {
 func NewRouter() server.Router {
 	return &router{
 		healthHandler:   handler.NewHealthHandler(),
+		staffHandler:    handler.NewStaffHandler(),
 		userHandler:     handler.NewUserHandler(),
 		airplaneHandler: handler.NewAirplaneHandler(),
 		airportHandler:  handler.NewAirportHandler(),
